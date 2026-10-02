@@ -1,184 +1,58 @@
 # Campus Café — Order Page
 
-A one-page ordering app for the campus café. Browse the menu, build a cart,
-choose a discount, and place an order. Built for Week 1 of Principles and
-Concepts of Software Engineering, Bay Atlantic University.
+A browser based café ordering app for Week 6 of Principles and Concepts of Software Engineering at Bay Atlantic University.
 
-**Live page:** https://YOUR-USERNAME.github.io/campus-cafe/
-**Tests:** https://YOUR-USERNAME.github.io/campus-cafe/tests.html
+**Live app:** https://astounding-pavlova-a68b85.netlify.app/  
+**Unit tests:** https://astounding-pavlova-a68b85.netlify.app/tests.html
 
----
+## Run the app and tests
 
-## How to run the app
+Open `index.html` in a browser, or use the live app link above. Open `tests.html` to run the 14 unit checks. No install or build step is needed.
 
-Nothing to install. Either:
+## Features
 
-- Open the live link above, or
-- Download the repository and open `index.html` in any browser.
+- Menu with nine priced items and stock status.
+- Cart with add, remove, and quantity controls; totals update when the cart changes.
+- None, Student (10%), Staff (15%), and Happy Hour (second drink free) discounts.
+- Checkout shows an order number and receipt, or a clear validation error.
 
-## How to run the tests
+## Design patterns and SOLID
 
-Open `tests.html` in a browser (or the live tests link above). Results render
-on the page and are printed to the browser console. All 14 tests should pass.
+**Strategy — `discounts.js`:** each discount is a separate object implementing `apply(lines, subtotalCents)`. The order code uses the shared strategy contract, so a rule can be added without changing checkout.
 
-There is no test framework and no build step, which is deliberate: the logic
-files never touch the DOM, so they can be exercised by a plain script.
+**Observer — `cart.js`:** cart mutations notify subscribers. `ui.js` subscribes the cart and totals renderers so both update from cart changes.
 
----
+**Single Responsibility:** `menu.js` contains menu data, `cart.js` manages cart state, `discounts.js` holds pricing rules, `order.js` validates and prices orders, and `ui.js` handles the DOM.
 
-## What the app does
+**Open/Closed:** adding a discount strategy does not require modifying the existing checkout logic.
 
-- Menu of 9 items with name, price, category and stock status.
-- Cart: add items, change quantity, remove lines. The total updates by itself.
-- Discounts: None, Student (10% off), Staff (15% off), Happy Hour (second drink free).
-- Place order: shows an order number and a receipt on success, or a clear error.
+## `placeOrder` contract
 
----
+`placeOrder(cart, discountStrategy)` takes a `Cart` and a discount strategy. On success it returns `{ ok: true, order }` with an ID, timestamp, item lines, subtotal, discount, and total. On failure it returns `{ ok: false, code, message, details }` and never changes the cart.
 
-## Design patterns
+| Error code | Meaning |
+|---|---|
+| `EMPTY_CART` | There are no items to order. |
+| `INVALID_QUANTITY` | A quantity is not a whole number from 1 through 10. |
+| `OUT_OF_STOCK` | An item is unavailable. |
 
-### Strategy — `js/discounts.js`
+The page handles each error; invalid quantities are highlighted.
 
-Every discount rule is a separate object behind one interface:
+## Project files
 
-```
-DiscountStrategy { id, label, apply(lines, subtotalCents) -> discountCents }
-```
+`index.html` and `tests.html` are the app and test runner. `styles.css` contains styling. `menu.js`, `discounts.js`, `cart.js`, `order.js`, and `ui.js` contain the application logic. `tests.js` contains the unit checks. All files are at the repository root.
 
-`NoDiscount`, `StudentDiscount`, `StaffDiscount` and `HappyHourDiscount` each
-implement `apply()`. Nothing outside this file knows which rule is active —
-callers just call `apply()` and use the number. Adding a fifth discount means
-adding one object to the `DISCOUNTS` registry; no existing code is edited.
-
-### Observer — `js/cart.js`
-
-`Cart` keeps the order lines and a list of subscribers. `subscribe(fn)`
-registers a listener and returns an unsubscribe function; every mutation
-(`add`, `remove`, `setQuantity`, `clear`) calls `notify()`, which pushes a
-snapshot to all subscribers.
-
-Two observers are registered in `js/ui.js`: `renderCart` (the table) and
-`renderTotals` (the totals panel). Neither is ever called directly when the
-cart changes — the cart tells them.
-
----
-
-## SOLID principles
-
-**Single Responsibility.** Each file has one job. `menu.js` is data, `cart.js`
-is cart state, `discounts.js` is pricing rules, `order.js` validates and prices
-an order, `ui.js` is the only file that touches the DOM. That separation is
-what makes the logic unit-testable without a browser.
-
-**Open/Closed.** `discounts.js` is open to extension and closed to
-modification. A new discount is a new strategy object added to the registry.
-`order.js`, `cart.js` and `ui.js` require no change, because they depend on the
-`DiscountStrategy` interface rather than on any specific rule.
-
-**Dependency Inversion** (bonus). `Cart` depends on "a function that wants to
-be notified", not on any UI component, and `placeOrder` depends on the discount
-interface, not on a concrete discount.
-
----
-
-## The `placeOrder` contract
-
-Defined and documented at the top of `js/order.js`.
-
-```
-placeOrder(cart, discountStrategy)
-```
-
-**Takes:** a `Cart` instance and a `DiscountStrategy`.
-
-**Returns on success:**
-
-```js
-{
-  ok: true,
-  order: {
-    id, placedAt, lines,
-    subtotalCents, discountLabel, discountCents, totalCents
-  }
-}
-```
-
-**Returns on failure:**
-
-```js
-{ ok: false, code, message, details }
-```
-
-| Code | When | `details` |
-|---|---|---|
-| `EMPTY_CART` | The cart has no lines | `{}` |
-| `INVALID_QUANTITY` | A quantity is not a whole number from 1 to 10 | `{ offenders: [{id, name, quantity}] }` |
-| `OUT_OF_STOCK` | A line refers to an item that is not in stock | `{ offenders: [{id, name}] }` |
-
-**Guarantees**
-
-- Never throws for invalid input; invalid input is a return value.
-- Checks run in a fixed order (empty, then quantity, then stock), so the same
-  cart always produces the same code.
-- Never mutates the cart.
-- `totalCents` is never negative; a discount larger than the subtotal is capped.
-
-**Handling.** `js/ui.js` switches on `result.code` and handles all three:
-`EMPTY_CART` and `OUT_OF_STOCK` show the message; `INVALID_QUANTITY` also
-highlights the offending quantity inputs in red.
-
----
-
-## Design notes
-
-**Money is in cents.** Every amount is a whole number of cents and is only
-formatted for display. Dollars as floating-point numbers accumulate rounding
-errors across a multi-line order.
-
-**Stock is checked at order time, not at add time.** Out-of-stock items can
-enter the cart on purpose, because stock can change between browsing and
-checkout — and because it makes the error path demonstrable.
-
-**Happy Hour is defined explicitly.** The brief says "second drink free"
-without saying which drink. We expand drinks into units, sort most expensive
-first, and make every second unit free, so the customer keeps the pricier
-drink. Food never counts. This is stated in the code comment because an
-unstated pricing rule is a defect waiting to happen.
-
----
-
-## Files
-
-```
-index.html         the app
-tests.html         test runner
-styles.css         all styling
-js/menu.js         menu data and money formatting
-js/discounts.js    Strategy pattern — discount rules
-js/cart.js         Observer pattern — cart state and notifications
-js/order.js        placeOrder contract, validation, pricing
-js/ui.js           rendering, event wiring, error display
-js/tests.js        14 unit tests
-```
-
----
-
-## Who did what
+## Team contributions
 
 | Member | Contribution |
 |---|---|
-| Lucca Cabrera | `js/discounts.js` (Strategy), `js/order.js` (contract and validation), contract documentation |
-| Palash Pratim Dev Nath | `js/cart.js` (Observer), `js/tests.js` (14 unit tests) |
-| [Member 3] | `index.html`, `styles.css`, menu data |
-| [Member 4] | `js/ui.js` (rendering and error handling), README, GitHub Pages setup |
+| Lucca Cabrera | `discounts.js` (Strategy), `order.js` (contract and validation), contract documentation |
+| Palash Pratim Dev Nath | `cart.js` (Observer), `tests.js` (14 unit tests) |
+| Add teammate name | `index.html`, `styles.css`, menu data |
+| Add teammate name | `ui.js`, README, Netlify setup |
 
-All members presented. Commit history reflects each member's own work.
+Fill in the teammate names and verify contributions before submission. Each team member should have commits in the repository history.
 
----
+## Notes
 
-## Known limitations
-
-- The menu is hard-coded in `js/menu.js`; there is no backend or persistence.
-- Orders are not stored — refreshing the page clears everything.
-- Order numbers use a random four-digit suffix, so collisions are possible.
-  A real system would get the number from a server.
+The menu is hard-coded and orders are not persisted. Order IDs use a random suffix and are not guaranteed unique.
