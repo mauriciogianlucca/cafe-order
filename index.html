@@ -1,0 +1,69 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Campus Café — Order</title>
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+<header class="top">
+  <div class="shell">
+    <h1>Campus Café</h1>
+    <p>Order ahead. Pick it up at the counter.</p>
+  </div>
+</header>
+
+<main class="shell grid">
+
+  <section class="panel" aria-labelledby="menu-h">
+    <h2 id="menu-h">Menu</h2>
+    <div id="menu" class="menu"></div>
+  </section>
+
+  <section class="panel" aria-labelledby="order-h">
+    <h2 id="order-h">Your order <span id="item-count" class="count">0 items</span></h2>
+
+    <p id="cart-empty" class="empty">Your cart is empty. Add something from the menu.</p>
+
+    <div class="table-wrap">
+      <table class="cart">
+        <thead>
+          <tr><th>Item</th><th>Qty</th><th class="num">Price</th><th></th></tr>
+        </thead>
+        <tbody id="cart-body"></tbody>
+      </table>
+    </div>
+
+    <div class="field">
+      <label for="discount">Discount</label>
+      <select id="discount"></select>
+    </div>
+
+    <div class="totals">
+      <p class="t-row"><span>Subtotal</span><span id="subtotal">$0.00</span></p>
+      <p class="t-row" id="discount-row" hidden><span>Discount</span><span id="discount-amount">-$0.00</span></p>
+      <p class="t-row t-total"><span>Total</span><span id="total">$0.00</span></p>
+    </div>
+
+    <button id="place-order" type="button" class="primary">Place order</button>
+
+    <p id="error" class="error" role="alert" tabindex="-1" hidden></p>
+    <div id="receipt" class="receipt" role="status" hidden></div>
+  </section>
+
+</main>
+
+<footer class="shell foot">
+  <p>Team 1 · Principles and Concepts of Software Engineering · Bay Atlantic University</p>
+  <p><a href="tests.html">Run the unit tests</a></p>
+</footer>
+
+<script src="js/menu.js"></script>
+<script src="js/discounts.js"></script>
+<script src="js/cart.js"></script>
+<script src="js/order.js"></script>
+<script src="js/ui.js"></script>
+</body>
+</html>
