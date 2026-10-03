@@ -1,69 +1,23 @@
 <!doctype html>
 <html lang="en">
 <head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Campus Café — Order</title>
-<link rel="stylesheet" href="styles.css">
+<meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#f8f5ef"><meta name="description" content="Your campus coffee stop. Fresh coffee, good food, easy pickup between classes.">
+<title>Campus Café — Your campus coffee stop</title><link rel="stylesheet" href="styles.css">
 </head>
 <body>
-
-<header class="top">
-  <div class="shell">
-    <h1>Campus Café</h1>
-    <p>Order ahead. Pick it up at the counter.</p>
-  </div>
-</header>
-
-<main class="shell grid">
-
-  <section class="panel" aria-labelledby="menu-h">
-    <h2 id="menu-h">Menu</h2>
-    <div id="menu" class="menu"></div>
-  </section>
-
-  <section class="panel" aria-labelledby="order-h">
-    <h2 id="order-h">Your order <span id="item-count" class="count">0 items</span></h2>
-
-    <p id="cart-empty" class="empty">Your cart is empty. Add something from the menu.</p>
-
-    <div class="table-wrap">
-      <table class="cart">
-        <thead>
-          <tr><th>Item</th><th>Qty</th><th class="num">Price</th><th></th></tr>
-        </thead>
-        <tbody id="cart-body"></tbody>
-      </table>
-    </div>
-
-    <div class="field">
-      <label for="discount">Discount</label>
-      <select id="discount"></select>
-    </div>
-
-    <div class="totals">
-      <p class="t-row"><span>Subtotal</span><span id="subtotal">$0.00</span></p>
-      <p class="t-row" id="discount-row" hidden><span>Discount</span><span id="discount-amount">-$0.00</span></p>
-      <p class="t-row t-total"><span>Total</span><span id="total">$0.00</span></p>
-    </div>
-
-    <button id="place-order" type="button" class="primary">Place order</button>
-
-    <p id="error" class="error" role="alert" tabindex="-1" hidden></p>
-    <div id="receipt" class="receipt" role="status" hidden></div>
-  </section>
-
+<div class="announcement"><span class="open-dot"></span> Brewing now · Open weekdays 7:30 am–6:00 pm <span class="announcement-note">Your next study break starts here</span></div>
+<header class="top" id="home"><div class="shell nav-wrap">
+<a class="brand" href="#home" aria-label="Campus Café home"><span class="brand-mark" aria-hidden="true">C</span><span><strong>campus<span>café</span></strong><small>GOOD DAYS START HERE</small></span></a>
+<nav aria-label="Main navigation"><a href="#menu-section">Menu</a><a href="#story">Our café</a><a href="#visit">Find us</a></nav><a class="nav-order" href="#menu-section">Order ahead <span aria-hidden="true">↗</span></a>
+</div></header>
+<main>
+<section class="hero shell"><div class="hero-copy"><p class="eyebrow"><span>✳</span> A little pause in your day</p><h1>Your campus.<br><em>Your coffee.</em></h1><p class="hero-intro">Made for the early lectures, long study sessions, and everything in between. Good coffee, good company, right around the corner.</p><a class="hero-cta" href="#menu-section">Find your usual <span aria-hidden="true">↓</span></a><div class="hero-note"><span class="mini-avatars" aria-hidden="true"><i>☕</i><i>✳</i><i>♡</i></span><span>A favorite campus ritual<br><strong>One cup at a time.</strong></span></div></div><div class="hero-art" role="img" aria-label="A freshly brewed coffee in soft morning light"><div class="hero-sticker">FRESH<br>BREWED<br><b>DAILY</b></div><span class="image-credit">A good moment, made daily</span></div><div class="hero-bottomline"><span>01 — MADE WITH CARE</span><span>02 — HERE FOR YOUR DAY</span><span>03 — ALWAYS ROOM FOR ONE MORE</span></div></section>
+<section class="menu-section" id="menu-section"><div class="shell"><div class="section-heading"><div><p class="eyebrow">THE GOOD STUFF</p><h2 id="menu-h">A little something<br><em>for every kind of day.</em></h2></div><p class="section-aside">Sipped slowly or on the way to class.<br>Made fresh, just for you.</p></div><div class="menu-tools"><div id="menu-filters" class="menu-filters" aria-label="Filter menu"></div><label class="search-wrap"><span aria-hidden="true">⌕</span><input id="menu-search" type="search" placeholder="Find your favorite…" aria-label="Search the menu"></label></div><p id="menu-result-count" class="menu-result-count" aria-live="polite"></p><div id="menu" class="menu" aria-live="polite"></div></div></section>
+<section class="order-section" id="order-section"><div class="shell order-layout"><div class="order-promise"><p class="eyebrow">A BETTER BREAK, A FEW CLICKS AWAY</p><h2>Good things<br>are <em>on the way.</em></h2><p>Build your order here and we’ll have it ready for pickup at the café.</p><div class="promise-note">✳ &nbsp;Made fresh when you order</div></div><section class="panel" aria-labelledby="order-h"><h2 id="order-h">Your order <span id="item-count" class="count">0 items</span></h2><p id="cart-empty" class="empty">Your cart is empty. Add something from the menu.</p><div class="table-wrap"><table class="cart"><thead><tr><th>Item</th><th>Qty</th><th class="num">Price</th><th></th></tr></thead><tbody id="cart-body"></tbody></table></div><div class="field"><label for="discount">Discount</label><select id="discount"></select></div><div class="totals"><p class="t-row"><span>Subtotal</span><span id="subtotal">$0.00</span></p><p class="t-row" id="discount-row" hidden><span>Discount</span><span id="discount-amount">-$0.00</span></p><p class="t-row t-total"><span>Total</span><span id="total">$0.00</span></p></div><button id="place-order" type="button" class="primary">Place order</button><p id="error" class="error" role="alert" tabindex="-1" hidden></p><div id="receipt" class="receipt" role="status" hidden></div></section></div></section>
+<section class="story-section" id="story"><div class="shell story-layout"><div class="story-photo" role="img" aria-label="A welcoming campus coffee shop"></div><div class="story-copy"><p class="eyebrow">A PLACE BETWEEN PLACES</p><h2>Come as you are.<br><em>Stay a little.</em></h2><p>Campus can move fast. There should always be a place to slow down, catch up with a friend, or find your focus over something warm.</p><p>We’re your neighborhood café on campus: familiar faces, fresh favorites, and a seat saved for you.</p><a href="#visit" class="text-link">Come say hello <span aria-hidden="true">↗</span></a></div></div></section>
+<section class="visit-section" id="visit"><div class="shell visit-grid"><div><p class="eyebrow">YOUR CAMPUS COFFEE STOP</p><h2>Right where<br>your day <em>happens.</em></h2><p>Find us in the campus commons, steps from the library and your next class.</p></div><div class="visit-card"><span class="visit-icon">⌖</span><h3>Find your way</h3><p>Campus Commons<br>Ground floor, beside the library</p><a href="https://maps.google.com/?q=Bay+Atlantic+University" target="_blank" rel="noreferrer">Get directions ↗</a></div><div class="visit-card hours-card"><span class="visit-icon">◷</span><h3>Here when you need us</h3><p><span>Monday–Friday</span><strong>7:30 am – 6:00 pm</strong><span>Saturday–Sunday</span><strong>Closed</strong></p><a href="#menu-section">Order for pickup ↗</a></div></div></section>
 </main>
-
-<footer class="shell foot">
-  <p>Campus Café · Principles and Concepts of Software Engineering · Bay Atlantic University</p>
-  <p><a href="tests.html">Run the unit tests</a></p>
-</footer>
-
-<script src="menu.js"></script>
-<script src="discounts.js"></script>
-<script src="cart.js"></script>
-<script src="order.js"></script>
-<script src="ui.js"></script>
-</body>
-</html>
+<footer class="foot"><div class="shell foot-main"><a class="brand foot-brand" href="#home"><span class="brand-mark" aria-hidden="true">C</span><span><strong>campus<span>café</span></strong><small>GOOD DAYS START HERE</small></span></a><p>Made for your campus days.<br>Served with a little extra care.</p><div class="foot-links"><a href="#menu-section">Menu</a><a href="#story">Our café</a><a href="#visit">Find us</a><a href="tests.html">Course project tests</a></div></div><div class="shell foot-bottom"><span>© 2026 Campus Café · Made for campus life</span><span>Good coffee. Good company. <b>☕</b></span></div></footer>
+<script src="menu.js"></script><script src="discounts.js"></script><script src="cart.js"></script><script src="order.js"></script><script src="ui.js"></script>
+</body></html>
